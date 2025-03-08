@@ -1,0 +1,56 @@
+[gd_scene load_steps=5 format=3 uid="uid://cwsam0d2kdga7"]
+
+[ext_resource type="Script" path="res://ui/console/console.gd" id="1_jepdy"]
+[ext_resource type="Script" path="res://ui/console/output_text.gd" id="2_a4tep"]
+[ext_resource type="Script" path="res://ui/console/input_text.gd" id="2_jyh3w"]
+[ext_resource type="Script" path="res://ui/console/scroll_container.gd" id="2_y1ho0"]
+
+[node name="Console" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_jepdy")
+
+[node name="Output" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 700.0
+offset_bottom = 300.0
+color = Color(0, 0, 0, 0.392157)
+
+[node name="OutputScroll" type="ScrollContainer" parent="Output"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_y1ho0")
+
+[node name="OutputText" type="RichTextLabel" parent="Output/OutputScroll"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("2_a4tep")
+
+[node name="Input" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 300.0
+offset_right = 700.0
+offset_bottom = 350.0
+color = Color(0, 0, 0, 0.588235)
+
+[node name="InputText" type="LineEdit" parent="Input"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+script = ExtResource("2_jyh3w")
+
+[connection signal="focus_entered" from="Input/InputText" to="." method="_on_input_text_focus_entered"]
+[connection signal="focus_exited" from="Input/InputText" to="." method="_on_input_text_focus_exited"]
+[connection signal="text_changed" from="Input/InputText" to="." method="_on_input_text_text_changed"]
+[connection signal="text_submitted" from="Input/InputText" to="." method="_on_input_text_text_submitted"]
+[connection signal="text_submitted" from="Input/InputText" to="Input/InputText" method="_on_text_submitted"]

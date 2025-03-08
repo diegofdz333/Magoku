@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://cvldhaye857qq"]
+
+[ext_resource type="Script" path="res://ui/dialogue/dialogue_box/dialogue_box.gd" id="1_bh82k"]
+[ext_resource type="Texture2D" uid="uid://cue6suu2h2cja" path="res://ui/dialogue/dialogue_box/assets/box_no_art.png" id="1_d6uli"]
+[ext_resource type="FontFile" uid="uid://dks6c51c63w12" path="res://common/assets/fonts/VeniceClassic.ttf" id="2_xobrk"]
+[ext_resource type="FontFile" uid="uid://c2o353y0co8in" path="res://common/assets/fonts/m6x11plus.ttf" id="4_onago"]
+
+[node name="DialogueBox" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_bh82k")
+
+[node name="BoxNoArt" type="Sprite2D" parent="."]
+position = Vector2(0, -66)
+texture = ExtResource("1_d6uli")
+
+[node name="Name" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = -242.0
+offset_top = -124.0
+offset_right = -90.0
+offset_bottom = -105.0
+scale = Vector2(1.095, 1.095)
+theme_override_fonts/normal_font = ExtResource("2_xobrk")
+theme_override_font_sizes/normal_font_size = 19
+text = "Rosewood"
+
+[node name="Dialogue" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = -244.0
+offset_top = -97.0
+offset_right = 245.0
+offset_bottom = -18.0
+theme_override_fonts/normal_font = ExtResource("4_onago")
+theme_override_font_sizes/normal_font_size = 18
+text = "Rosewood
+Appleweed
+Pearfruit
+Daisy"

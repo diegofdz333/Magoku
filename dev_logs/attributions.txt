@@ -1,0 +1,3 @@
+Fonts:
+	Yolk: https://somepx.itch.io/free-font-yolk
+	Venice Classic: https://www.dafont.com/venice-classic.font
