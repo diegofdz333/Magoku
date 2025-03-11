@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://cwsam0d2kdga7"]
 
-[ext_resource type="Script" path="res://ui/console/console.gd" id="1_jepdy"]
-[ext_resource type="Script" path="res://ui/console/output_text.gd" id="2_a4tep"]
-[ext_resource type="Script" path="res://ui/console/input_text.gd" id="2_jyh3w"]
-[ext_resource type="Script" path="res://ui/console/scroll_container.gd" id="2_y1ho0"]
+[ext_resource type="Script" uid="uid://cb6kwkciy0f3s" path="res://ui/console/console.gd" id="1_jepdy"]
+[ext_resource type="Script" uid="uid://df2obfb7sejt6" path="res://ui/console/output_text.gd" id="2_a4tep"]
+[ext_resource type="Script" uid="uid://b8nlr13rj4s0t" path="res://ui/console/input_text.gd" id="2_jyh3w"]
+[ext_resource type="Script" uid="uid://02sxhrnyv2op" path="res://ui/console/scroll_container.gd" id="2_y1ho0"]
 
 [node name="Console" type="Control"]
 layout_mode = 3

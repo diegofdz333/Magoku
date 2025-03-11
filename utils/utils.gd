@@ -17,3 +17,10 @@ func parse_arguments(command: String) -> Array[String]:
 		print(arg)
 	
 	return args
+
+
+func round_to_cell(cords: Vector2):
+	return Vector2(
+		round((cords.x + 8) / 16) * 16 - 8,
+		round((cords.y + 8) / 16) * 16 - 8
+	)

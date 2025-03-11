@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://baa7jxws02ten"]
 
-[ext_resource type="Script" path="res://scenes/player/Player.gd" id="1_ekwtc"]
+[ext_resource type="Script" uid="uid://wliigq3e5opr" path="res://scenes/player/Player.gd" id="1_ekwtc"]
 [ext_resource type="Texture2D" uid="uid://dg45crwgo5s37" path="res://assets/sprites/characters/hero1.png" id="2_kepgj"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7b0eh"]
@@ -174,15 +174,15 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qscnw"]
 _data = {
-"RESET": SubResource("Animation_omfry"),
-"idle_down": SubResource("Animation_wflig"),
-"idle_left": SubResource("Animation_yhrah"),
-"idle_right": SubResource("Animation_qprmr"),
-"idle_up": SubResource("Animation_ynx8t"),
-"walking_down": SubResource("Animation_d2d2s"),
-"walking_left": SubResource("Animation_oxr8v"),
-"walking_right": SubResource("Animation_38pj1"),
-"walking_up": SubResource("Animation_23h78")
+&"RESET": SubResource("Animation_omfry"),
+&"idle_down": SubResource("Animation_wflig"),
+&"idle_left": SubResource("Animation_yhrah"),
+&"idle_right": SubResource("Animation_qprmr"),
+&"idle_up": SubResource("Animation_ynx8t"),
+&"walking_down": SubResource("Animation_d2d2s"),
+&"walking_left": SubResource("Animation_oxr8v"),
+&"walking_right": SubResource("Animation_38pj1"),
+&"walking_up": SubResource("Animation_23h78")
 }
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
@@ -203,5 +203,5 @@ shape = SubResource("CircleShape2D_7b0eh")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_qscnw")
+&"": SubResource("AnimationLibrary_qscnw")
 }

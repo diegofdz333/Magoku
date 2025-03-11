@@ -1,14 +1,16 @@
-[gd_scene load_steps=10 format=4 uid="uid://sky2gs5mm0p2"]
+[gd_scene load_steps=12 format=4 uid="uid://sky2gs5mm0p2"]
 
-[ext_resource type="Script" path="res://scenes/main/main.gd" id="1_l1j6c"]
+[ext_resource type="Script" uid="uid://dps2qsuqidw5i" path="res://scenes/main/main.gd" id="1_l1j6c"]
 [ext_resource type="PackedScene" uid="uid://cwsam0d2kdga7" path="res://ui/console/console.tscn" id="2_g8dxy"]
 [ext_resource type="PackedScene" uid="uid://cvldhaye857qq" path="res://ui/dialogue/dialogue_box/dialogue_box.tscn" id="2_itdh1"]
-[ext_resource type="Script" path="res://ui/ui_layer.gd" id="2_ntois"]
+[ext_resource type="Script" uid="uid://bwu70w3fnxm7o" path="res://ui/ui_layer.gd" id="2_ntois"]
 [ext_resource type="PackedScene" uid="uid://dokmdbk5gm76o" path="res://scenes/game_camera/game_camera.tscn" id="3_61xbm"]
 [ext_resource type="TileSet" uid="uid://bdrt74k6oqca4" path="res://resources/OutsideFloorTiles.tres" id="4_1jkxt"]
 [ext_resource type="PackedScene" uid="uid://baa7jxws02ten" path="res://scenes/player/player.tscn" id="5_8nh27"]
 [ext_resource type="Texture2D" uid="uid://bre2rrri53hrn" path="res://ui/grid/assets/grid.png" id="6_2vxtb"]
-[ext_resource type="Script" path="res://ui/grid/grid.gd" id="7_lgsps"]
+[ext_resource type="Script" uid="uid://cke6jfwcim50" path="res://maps/common/tile_map_layers.gd" id="6_a8run"]
+[ext_resource type="Script" uid="uid://c440hxu7bv2x5" path="res://ui/grid/grid.gd" id="7_lgsps"]
+[ext_resource type="PackedScene" uid="uid://cqhltnmv3flxv" path="res://ui/grid/grid_square.tscn" id="7_ouso4"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_l1j6c")
@@ -34,6 +36,8 @@ z_index = 100
 zoom = Vector2(3, 3)
 
 [node name="TileMapLayers" type="Node2D" parent="."]
+script = ExtResource("6_a8run")
+grid_square = ExtResource("7_ouso4")
 
 [node name="Base" type="TileMapLayer" parent="TileMapLayers"]
 use_parent_material = true
@@ -47,7 +51,7 @@ tile_set = ExtResource("4_1jkxt")
 
 [node name="Wall" type="TileMapLayer" parent="TileMapLayers"]
 use_parent_material = true
-tile_map_data = PackedByteArray("AAD+//3/AQACAAIAAAD///3/AQAEAAIAAAAAAP3/AQAFAAIAAAABAP3/AQACAAIAAAACAP3/AQADAAIAAAD9//3/AQABAAIAAAD9//z/AQABAAEAAAACAPz/AQADAAEAAAABAPz/AQACAAEAAAAAAPz/AQAFAAEAAAD///z/AQAEAAEAAAD+//z/AQACAAEAAAD9//v/AQACAAYAAAACAPv/AQADAAYAAAD+//v/AQACAAAAAAD///v/AQACAAAAAAAAAPv/AQACAAAAAAABAPv/AQACAAAAAAD9//r/AQACAAUAAAACAPr/AQADAAUAAAAMAPv/AgAAAAUAAAAOAPv/AgABAAUAAAAPAPv/AgABAAUAAAANAPv/AgABAAUAAAAQAPv/AgABAAUAAAARAPv/AgABAAUAAAASAPv/AgABAAUAAAATAPv/AgABAAUAAAAUAPv/AgABAAUAAAAVAPv/AgABAAUAAAAWAPv/AgABAAUAAAAXAPv/AgABAAUAAAAYAPv/AgABAAUAAAAZAPv/AgABAAUAAAAaAPv/AgABAAUAAAAbAPv/AgABAAUAAAAMAPz/AgAAAAYAAAAMAP3/AgAAAAYAAAAMAP7/AgAAAAYAAAAbAAYAAgABAAgAAAAaAAYAAgABAAgAAAAZAAYAAgABAAgAAAAYAAYAAgABAAgAAAAXAAYAAgABAAgAAAAWAAYAAgABAAgAAAAVAAYAAgABAAgAAAAUAAYAAgABAAgAAAATAAYAAgABAAgAAAASAAYAAgABAAgAAAARAAYAAgABAAgAAAAQAAYAAgABAAgAAAAPAAYAAgABAAgAAAAOAAYAAgABAAgAAAANAAYAAgABAAgAAAAMAAYAAgAAAAgAAAAMAAUAAgAAAAcAAAAMAAMAAgAAAAYAAAAMAAQAAgAAAAYAAAAcAAYAAgABAAgAAAAdAAYAAgABAAgAAAAeAAYAAgABAAgAAAAfAAYAAgABAAgAAAAgAAYAAgABAAgAAAAhAAYAAgABAAgAAAAiAAYAAgABAAgAAAAjAAYAAgABAAgAAAAkAAYAAgABAAgAAAAlAAYAAgACAAgAAAAlAAUAAgACAAcAAAAlAPv/AgACAAUAAAAlAPz/AgACAAYAAAAlAP3/AgACAAYAAAAlAP7/AgACAAYAAAAlAP//AgACAAYAAAAlAAAAAgACAAYAAAAlAAEAAgACAAYAAAAlAAIAAgACAAYAAAAlAAMAAgACAAYAAAAlAAQAAgACAAYAAAAkAPv/AgABAAUAAAAjAPv/AgABAAUAAAAiAPv/AgABAAUAAAAhAPv/AgABAAUAAAAgAPv/AgABAAUAAAAfAPv/AgABAAUAAAAeAPv/AgABAAUAAAAdAPv/AgABAAUAAAAcAPv/AgABAAUAAAAMAP//AgAAAAYAAAAMAAIAAgAAAAYAAAAQAPn/AgABAAIAAAAXAPj/AgABAAIAAAAfAPn/AgADAAIAAAAcAPn/AgABAAIAAAA=")
+tile_map_data = PackedByteArray("AAD+//3/AQACAAIAAAD///3/AQAEAAIAAAAAAP3/AQAFAAIAAAABAP3/AQACAAIAAAACAP3/AQADAAIAAAD9//3/AQABAAIAAAD9//z/AQABAAEAAAACAPz/AQADAAEAAAABAPz/AQACAAEAAAAAAPz/AQAFAAEAAAD///z/AQAEAAEAAAD+//z/AQACAAEAAAD9//v/AQACAAYAAAACAPv/AQADAAYAAAD+//v/AQACAAAAAAD///v/AQACAAAAAAAAAPv/AQACAAAAAAABAPv/AQACAAAAAAD9//r/AQACAAUAAAACAPr/AQADAAUAAAAOAPv/AgABAAUAAAAPAPv/AgABAAUAAAANAPv/AgABAAUAAAAQAPv/AgABAAUAAAARAPv/AgABAAUAAAASAPv/AgABAAUAAAATAPv/AgABAAUAAAAUAPv/AgABAAUAAAAVAPv/AgABAAUAAAAWAPv/AgABAAUAAAAXAPv/AgABAAUAAAAYAPv/AgABAAUAAAAZAPv/AgABAAUAAAAaAPv/AgABAAUAAAAbAPv/AgABAAUAAAAMAPz/AgAAAAYAAAAMAP3/AgAAAAYAAAAMAP7/AgAAAAYAAAAbAAYAAgABAAgAAAAaAAYAAgABAAgAAAAZAAYAAgABAAgAAAAYAAYAAgABAAgAAAAXAAYAAgABAAgAAAAWAAYAAgABAAgAAAAVAAYAAgABAAgAAAAUAAYAAgABAAgAAAATAAYAAgABAAgAAAASAAYAAgABAAgAAAARAAYAAgABAAgAAAAQAAYAAgABAAgAAAAPAAYAAgABAAgAAAAOAAYAAgABAAgAAAANAAYAAgABAAgAAAAMAAYAAgAAAAgAAAAMAAUAAgAAAAcAAAAMAAMAAgAAAAYAAAAMAAQAAgAAAAYAAAAcAAYAAgABAAgAAAAdAAYAAgABAAgAAAAeAAYAAgABAAgAAAAfAAYAAgABAAgAAAAgAAYAAgABAAgAAAAhAAYAAgABAAgAAAAiAAYAAgABAAgAAAAjAAYAAgABAAgAAAAkAAYAAgABAAgAAAAlAAYAAgACAAgAAAAlAAUAAgACAAcAAAAlAPv/AgACAAUAAAAlAPz/AgACAAYAAAAlAP3/AgACAAYAAAAlAP7/AgACAAYAAAAlAP//AgACAAYAAAAlAAAAAgACAAYAAAAlAAEAAgACAAYAAAAlAAIAAgACAAYAAAAlAAMAAgACAAYAAAAlAAQAAgACAAYAAAAkAPv/AgABAAUAAAAjAPv/AgABAAUAAAAiAPv/AgABAAUAAAAhAPv/AgABAAUAAAAgAPv/AgABAAUAAAAfAPv/AgABAAUAAAAeAPv/AgABAAUAAAAdAPv/AgABAAUAAAAcAPv/AgABAAUAAAAMAP//AgAAAAYAAAAMAAIAAgAAAAYAAAAQAPn/AgABAAIAAAAXAPj/AgABAAIAAAAfAPn/AgADAAIAAAAcAPn/AgABAAIAAAD+//r/AQAAAAAAAAD///r/AQAAAAAAAAABAPr/AQAAAAAAAAAAAPr/AQAAAAAAAAAMAPv/AgAAAAUAAAA=")
 tile_set = ExtResource("4_1jkxt")
 
 [node name="UpperWall" type="TileMapLayer" parent="TileMapLayers"]
@@ -57,6 +61,7 @@ tile_map_data = PackedByteArray("AAD9//n/AQABAAAAAAD+//n/AQACAAAAAAD///n/AQACAAA
 tile_set = ExtResource("4_1jkxt")
 
 [node name="Player" parent="." instance=ExtResource("5_8nh27")]
+z_index = 10
 
 [node name="Grid" type="Sprite2D" parent="."]
 visible = false

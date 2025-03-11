@@ -7,18 +7,19 @@ var player: Player
 var camera: Camera
 var ui_layer: CanvasLayer
 var dialogue_box: DialogueBox
+var tile_map: TileMapLayers
 var grid
 
-var utils
+var utils = preload("res://utils/utils.gd").new()
 
 func _ready():
-	utils = preload("res://utils/utils.gd").new()
 	console = find_child("Console")
 	player = find_child("Player")
 	grid = find_child("Grid")
 	camera = find_child("GameCamera")
 	ui_layer = find_child("UI_Layer")
 	dialogue_box = find_child("DialogueBox")
+	tile_map = find_child("TileMapLayers")
 	camera.zoom_to(DEFAULT_ZOOM)
 	ui_layer.zoom_to(DEFAULT_ZOOM)
 
@@ -40,6 +41,8 @@ func command_parser(cmmd: String):
 		command_dialogue(arguments)
 	elif command == "hello":
 		print_and_respond("Hello, World!")
+	elif command == "paths":
+		command_paths(arguments)
 	elif command == "speed":
 		command_speed(arguments)
 	elif command == "grid":
@@ -110,7 +113,42 @@ func command_dialogue(arguments: Array[String]):
 		dialogue_box.set_hidden(false)
 	if hide:
 		dialogue_box.set_hidden(true)
+
+
+func command_paths(arguments: Array[String]):
+	var error_mssg = "usage: paths [-r <radius: int>] [-c | --clear] [-w | --walls]"
+	var radius = null
+	var clear = false
+	var walls = false
+	var i = 1
+	while i < arguments.size():
+		print(i)
+		if arguments[i] == "-r":
+			if i == arguments.size() - 1: print_and_error(error_mssg); return;
+			if not arguments[i + 1].is_valid_int():
+				print_and_error(error_mssg); return;
+			radius = arguments[i + 1]
+			i += 1
+		elif arguments[i] == "-c" || arguments[i] == "--clear":
+			clear = true
+		elif arguments[i] == "-w" || arguments[i] == "--walls":
+			walls = true
+		else:
+			print_and_error(error_mssg); return;
+		i += 1
 	
+	if (not clear and radius == null) or (clear and radius != null) or (walls and radius == null):
+		print_and_error(error_mssg); return;
+
+	if clear:
+		tile_map.clear_squares()
+	if radius != null:
+		tile_map.clear_squares()
+		if walls:
+			tile_map.showcase_walls(player.position, int(radius))
+		else:
+			tile_map.showcase_possible_paths(player.position, int(radius))
+
 # Change player speed
 func command_speed(arguments: Array[String]):
 	if arguments.size() != 2 or not arguments[1].is_valid_float(): 

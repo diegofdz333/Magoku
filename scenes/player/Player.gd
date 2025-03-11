@@ -14,6 +14,8 @@ const TARGET_POSITION_BUFFER = 1
 var target_position = Vector2.ZERO
 var is_moving_to_target_position = false
 
+var utils = preload("res://utils/utils.gd").new()
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	can_move = true
@@ -59,10 +61,7 @@ func update_animation():
 
 func commence_battle():
 	# Snap to nearest square
-	target_position = Vector2(
-			round((global_position.x + 8) / 16) * 16 - 8,
-			round((global_position.y + 8) / 16) * 16 - 8
-	)
+	target_position = utils.round_to_cell(global_position)
 	is_moving_to_target_position = true
 
 

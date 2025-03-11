@@ -1,3 +1,5 @@
 Fonts:
 	Yolk: https://somepx.itch.io/free-font-yolk
 	Venice Classic: https://www.dafont.com/venice-classic.font
+Code:
+	Priority Queue: _bigturtle https://www.reddit.com/r/godot/comments/100vnjv/i_wrote_astar_from_scratch_in_gdscript/

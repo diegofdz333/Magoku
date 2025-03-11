@@ -13,3 +13,10 @@
 3/5/2025
 	Added memory of previous commands to dev console
 	Worked on art
+
+3/8/2025:
+	Added fence art
+
+3/10/2025:
+	Added "paths" command which showcases possible paths
+	The beginning of the pathfinding code

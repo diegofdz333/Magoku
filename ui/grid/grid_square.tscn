@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://cqhltnmv3flxv"]
+
+[ext_resource type="Texture2D" uid="uid://dnohig7tb3d54" path="res://ui/grid/assets/blueSquare.png" id="1_haqhn"]
+
+[node name="GridSquare" type="Node2D"]
+
+[node name="BlueSquare" type="Sprite2D" parent="."]
+texture = ExtResource("1_haqhn")
