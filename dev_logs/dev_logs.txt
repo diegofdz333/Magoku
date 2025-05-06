@@ -20,3 +20,10 @@
 3/10/2025:
 	Added "paths" command which showcases possible paths
 	The beginning of the pathfinding code
+
+3/13/2025:
+	Player paths now highlighted when selected during battles
+
+5/5/2025:
+	A "Move" button now appears when player is clicked during a battle.
+	Button currently doesn't do anything

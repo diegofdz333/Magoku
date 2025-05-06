@@ -1,30 +1,101 @@
-extends Node
+extends Node2D
+
+class_name MainScene
 
 var DEFAULT_ZOOM = 2
 
+var utils = Utils.new()
+
+# child nodes / scenes
 var console: Console
 var player: Player
 var camera: Camera
-var ui_layer: CanvasLayer
+var ui_layer: UiLayer
 var dialogue_box: DialogueBox
 var tile_map: TileMapLayers
+var battle_menu: BattleMenu
 var grid
 
-var utils = preload("res://utils/utils.gd").new()
+# game states
+var in_battle: bool = false
+
+var paths_shown_entity
+var hovered_entity
+var selected_entity
+
+var is_console_focused = false
 
 func _ready():
 	console = find_child("Console")
 	player = find_child("Player")
 	grid = find_child("Grid")
 	camera = find_child("GameCamera")
-	ui_layer = find_child("UI_Layer")
+	ui_layer = find_child("UI_Layer");
 	dialogue_box = find_child("DialogueBox")
 	tile_map = find_child("TileMapLayers")
+	battle_menu = find_child("BattleMenu")
+	ui_layer.camera = camera
 	camera.zoom_to(DEFAULT_ZOOM)
 	ui_layer.zoom_to(DEFAULT_ZOOM)
+	paths_shown_entity = null
+
+
+func _process(delta):
+	if not is_console_focused:
+		process_battle(delta)
+
+
+func process_battle(_delta) -> void:
+	var mouse_cell_pos: Vector2 = utils.round_to_cell(get_global_mouse_position())
+	var player_pos = player.get_cell_position()
+	hovered_entity = null
+		
+	if player_pos != null and utils.vector_approx(mouse_cell_pos, player_pos):
+		hovered_entity = player
+	
+	var previously_selected = selected_entity
+	if Input.is_action_just_released("select"):
+		selected_entity = hovered_entity
+		if selected_entity == player:
+			ui_layer.anchor_element_to(battle_menu, player)
+			battle_menu.show_menu()
+	
+	if previously_selected != selected_entity and previously_selected == player:
+		var path: Array[Vector2] = tile_map.pathfind(player_pos, mouse_cell_pos, 6)
+		if path.size() > 0:
+			player.move_through_path(path)
+	
+	if selected_entity == null and hovered_entity == null and paths_shown_entity != null:
+		tile_map.clear_squares()
+		paths_shown_entity = null
+		
+	if selected_entity != null:
+		if paths_shown_entity != selected_entity:
+			paths_shown_entity = selected_entity
+			if selected_entity == player:
+				tile_map.showcase_possible_paths(player_pos, 6)
+	elif hovered_entity != null:
+		if paths_shown_entity != hovered_entity:
+			paths_shown_entity = hovered_entity
+			if hovered_entity == player:
+				tile_map.showcase_possible_paths(player_pos, 6)
+
+
+func set_hovered_enitity(entity):
+	hovered_entity = entity
+
+
+func set_selected_enitity(entity):
+	selected_entity = entity
+
+
+"""
+CONSOLE CODE BELOW
+"""
 
 func _on_console_console_command(cmmd):
 	command_parser(cmmd)
+
 
 func command_parser(cmmd: String):
 	var arguments =  utils.parse_arguments(cmmd)
@@ -63,12 +134,36 @@ func print_and_error(str):
 	print_rich("[color=red]%s[/color]" % str)
 	console.console_response(str, error)
 
+
+# ######################## 
 # Console Commands :
+# ########################
 
 # Start a battle
-func command_battle(_arguments: Array[String]):
-	grid.set_hidden(false)
-	player.commence_battle()
+func command_battle(arguments: Array[String]):
+	var error_mssg = "usage: battle [-s | --start] [-e | --end]"
+	var i = 1
+	var start = false
+	var end = false
+	while i < arguments.size():
+		if arguments[i] == "-s" || arguments[i] == "--start":
+			start = true
+		elif arguments[i] == "-e" || arguments[i] == "--end":
+			end = true
+		else:
+			print_and_error(error_mssg); return;
+		i += 1
+	if (start and end) or (not start and not end):
+		print_and_error(error_mssg); return;
+	
+	if start:
+		grid.set_hidden(false)
+		in_battle = true
+		player.commence_battle()
+	if end:
+		grid.set_hidden(true)
+		in_battle = false
+		player.end_battle()
 
 # Clear the console of all text
 func command_clear(_arguments: Array[String]):
@@ -122,7 +217,6 @@ func command_paths(arguments: Array[String]):
 	var walls = false
 	var i = 1
 	while i < arguments.size():
-		print(i)
 		if arguments[i] == "-r":
 			if i == arguments.size() - 1: print_and_error(error_mssg); return;
 			if not arguments[i + 1].is_valid_int():
@@ -183,3 +277,7 @@ func command_zoom(arguments: Array[String]):
 			print_and_error(errorMssg)
 	else:
 		print_and_error(errorMssg)
+
+
+func _on_console_console_focus_change(is_focused):
+	is_console_focused = is_focused

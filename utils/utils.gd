@@ -1,3 +1,7 @@
+class_name Utils
+
+const K_ERROR = 0.001
+
 """
 Parses a command-line string into an array of arguments, preserving quoted strings as single arguments.
 """
@@ -19,8 +23,29 @@ func parse_arguments(command: String) -> Array[String]:
 	return args
 
 
-func round_to_cell(cords: Vector2):
+"""
+Given a coordinate, returns the coordinate rounded to the nearest cell center
+"""
+func round_to_cell(cords: Vector2) -> Vector2:
 	return Vector2(
 		round((cords.x + 8) / 16) * 16 - 8,
 		round((cords.y + 8) / 16) * 16 - 8
 	)
+
+
+"""
+Given a global coordinate, will return the coordinate relative to the UI layer
+"""
+func global_to_ui_position(camera: Camera, viewport: Viewport, cords: Vector2) -> Vector2:
+	var relative_pos = cords - camera.global_position
+	var center_of_screen = viewport.get_visible_rect().size / 2
+	var ui_pos = relative_pos + (center_of_screen / camera.zoom)
+	return ui_pos
+
+
+func float_approx(a: float, b: float) -> bool:
+	return abs(a - b) < K_ERROR
+
+
+func vector_approx(a: Vector2, b: Vector2) -> bool:
+	return float_approx(a.x, b.x) and float_approx(a.y, b.y)

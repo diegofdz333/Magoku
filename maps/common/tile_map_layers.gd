@@ -17,9 +17,23 @@ var utils = preload("res://utils/utils.gd").new()
 func _ready():
 	wall_layer = $Wall
 
-
-func pathfind(source: Vector2, target: Vector2):
-	pass
+"""
+Returns an array of Vector 2 nodes from the source node to the radius node (Includes source node)
+Returns an array of size zero if no path is found
+"""
+func pathfind(source: Vector2, target: Vector2, radius: int) -> Array[Vector2]:
+	var paths: Paths = pathfind_all_cells(source, radius)
+	var path: Array[Vector2] = []
+	print("max ", paths.parents.size())
+	for i in range(paths.cells.size()):
+		var cell = paths.cells[i]
+		if utils.vector_approx(cell, target):
+			path.push_front(cell)
+			while paths.parents[i] != -1:
+				i = paths.parents[i]
+				path.push_front(paths.cells[i])
+			return path
+	return path
 
 
 func clear_squares():
@@ -28,9 +42,7 @@ func clear_squares():
 	instance_squares.clear()
 
 
-func showcase_walls(source: Vector2, radius: int):
-	print("showcase possible walls")
-	
+func showcase_walls(source: Vector2, radius: int):	
 	var top_left = utils.round_to_cell(source) - Vector2(16 * radius, 16 * radius)
 	var source_grid_index = Vector2i(radius, radius) 
 	
@@ -47,35 +59,36 @@ func showcase_walls(source: Vector2, radius: int):
 
 
 func showcase_possible_paths(source: Vector2, radius: int):
-	print("showcase possible paths")
-	var start = Time.get_ticks_msec()
-	print("time start: " + str(start))
-	var top_left: Vector2 = utils.round_to_cell(source) - Vector2(16 * radius, 16 * radius)
-	var reachable_cells = pathfind_all_cells(source, radius)
+	var paths: Paths = pathfind_all_cells(source, radius)
+	var reachable: Array[Vector2]
+
+	for r in paths.reachable:
+		reachable.push_back(paths.cells[r])
 	
-	for cell in reachable_cells:
-		var local_pos = top_left + Vector2(cell.x * 16, cell.y * 16)
+	for cell in reachable:
+		var local_pos = Vector2(cell.x, cell.y)
 		var instance: Node2D = grid_square.instantiate()
 		instance.position = local_pos
 		instance.z_index = 1
 		add_child(instance)
 		instance_squares.push_back(instance)
 	var end = Time.get_ticks_msec()
-	print("time end: " + str(end))
-	print("diff: " + str(end - start))
+
 
 """
 Will return a list of all cells in a grid that can be reached from a source
+Returns as an array of local coordinates
+Dijkstra's algorithm
 """
-func pathfind_all_cells(source: Vector2, distance: float):
+func pathfind_all_cells(source: Vector2, distance: float) -> Paths:
 	var distance_c: int = ceili(distance)
 	var source_grid_index = Vector2i(distance_c, distance_c) 
 	var top_left: Vector2 = utils.round_to_cell(source) - Vector2(16 * distance_c, 16 * distance_c)
-	var width = distance_c * 2
+	var width = distance_c * 2 + 1
 	var grid: Array[Array] = get_path_grid(top_left, width)
 	
 	var distance_arr: Array[Array] = []
-	var parent_arr: Array[Array] = []
+	var parent_grid: Array[Array] = []
 	var q = PriorityQueue.new()
 	for y in range(width):
 		var distance_line = []
@@ -88,7 +101,7 @@ func pathfind_all_cells(source: Vector2, distance: float):
 			else:
 				distance_line.push_back(MAX_DISTANCE)
 		distance_arr.push_back(distance_line)
-		parent_arr.push_back(parent_line)
+		parent_grid.push_back(parent_line)
 	
 	while not q.empty():
 		var u: Vector2i = q.extract()
@@ -98,14 +111,24 @@ func pathfind_all_cells(source: Vector2, distance: float):
 			if distance_arr[adj.y][adj.x] > distance_arr[u.y][u.x] + weight + K_ERROR:
 				distance_arr[adj.y][adj.x] = distance_arr[u.y][u.x] + weight
 				q.insert(adj, distance_arr[adj.y][adj.x])
-				parent_arr[adj.y][adj.x] = Vector2i(u.y, u.x)
+				parent_grid[adj.y][adj.x] = Vector2i(u.x, u.y)
 	
-	var reachable_arr: Array[Vector2i] = []
+	var reachable_arr: Array[int] = []
+	var parent_arr: Array[int] = []
+	var cells: Array[Vector2] = []
+	var count = 0
 	for y in range(width):
 		for x in range(width):
+			cells.push_back(top_left + Vector2(x * 16, y * 16))
 			if distance_arr[y][x] <= distance + K_ERROR:
-				reachable_arr.push_back(Vector2i(x, y))
-	return reachable_arr
+				reachable_arr.push_back(y * width + x)
+			count += 1
+			if parent_grid[y][x] != null: 
+				var parent: Vector2i = parent_grid[y][x]
+				parent_arr.push_back(parent.y * width + parent.x)
+			else: 
+				parent_arr.push_back(-1)
+	return Paths.new(cells, parent_arr, reachable_arr)
 
 
 func get_adjacencies(grid: Array[Array], u: Vector2i) -> Array[Vector2i]:
@@ -145,7 +168,6 @@ func get_path_grid(top_left: Vector2, length: int) -> Array[Array]:
 			var map_cords: Vector2i = wall_layer.local_to_map(local_cors)
 			if wall_layer.get_cell_tile_data(map_cords) != null:
 				grid_line.push_back(true)
-				print(local_cors, map_cords)
 			else:
 				grid_line.push_back(false)
 		grid.push_back(grid_line)
