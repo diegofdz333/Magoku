@@ -14,10 +14,8 @@ var ui_layer: UiLayer
 var dialogue_box: DialogueBox
 var tile_map: TileMapLayers
 var battle_menu: BattleMenu
+var combat: Combat
 var grid
-
-# game states
-var in_battle: bool = false
 
 var paths_shown_entity
 var hovered_entity
@@ -34,6 +32,8 @@ func _ready():
 	dialogue_box = find_child("DialogueBox")
 	tile_map = find_child("TileMapLayers")
 	battle_menu = find_child("BattleMenu")
+	combat = find_child("Combat")
+	
 	ui_layer.camera = camera
 	camera.zoom_to(DEFAULT_ZOOM)
 	ui_layer.zoom_to(DEFAULT_ZOOM)
@@ -41,44 +41,7 @@ func _ready():
 
 
 func _process(delta):
-	if not is_console_focused:
-		process_battle(delta)
-
-
-func process_battle(_delta) -> void:
-	var mouse_cell_pos: Vector2 = utils.round_to_cell(get_global_mouse_position())
-	var player_pos = player.get_cell_position()
-	hovered_entity = null
-		
-	if player_pos != null and utils.vector_approx(mouse_cell_pos, player_pos):
-		hovered_entity = player
-	
-	var previously_selected = selected_entity
-	if Input.is_action_just_released("select"):
-		selected_entity = hovered_entity
-		if selected_entity == player:
-			ui_layer.anchor_element_to(battle_menu, player)
-			battle_menu.show_menu()
-	
-	if previously_selected != selected_entity and previously_selected == player:
-		var path: Array[Vector2] = tile_map.pathfind(player_pos, mouse_cell_pos, 6)
-		if path.size() > 0:
-			player.move_through_path(path)
-	
-	if selected_entity == null and hovered_entity == null and paths_shown_entity != null:
-		tile_map.clear_squares()
-		paths_shown_entity = null
-		
-	if selected_entity != null:
-		if paths_shown_entity != selected_entity:
-			paths_shown_entity = selected_entity
-			if selected_entity == player:
-				tile_map.showcase_possible_paths(player_pos, 6)
-	elif hovered_entity != null:
-		if paths_shown_entity != hovered_entity:
-			paths_shown_entity = hovered_entity
-			if hovered_entity == player:
-				tile_map.showcase_possible_paths(player_pos, 6)
+	pass
 
 
 func set_hovered_enitity(entity):
@@ -158,11 +121,11 @@ func command_battle(arguments: Array[String]):
 	
 	if start:
 		grid.set_hidden(false)
-		in_battle = true
+		combat.begin_combat(player, tile_map, ui_layer, battle_menu)
 		player.commence_battle()
 	if end:
 		grid.set_hidden(true)
-		in_battle = false
+		combat.end_combat()
 		player.end_battle()
 
 # Clear the console of all text
@@ -181,9 +144,7 @@ func command_dialogue(arguments: Array[String]):
 	while i < arguments.size():
 		print(i)
 		if arguments[i] == "-n" || arguments[i] == "--name":
-			print("A")
 			if i == arguments.size() - 1: print_and_error(errorMssg); return;
-			print("B")
 			name_text = arguments[i + 1]
 			i += 1
 		elif arguments[i] == "-d" || arguments[i] == "--dialogue":

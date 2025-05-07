@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=4 uid="uid://sky2gs5mm0p2"]
+[gd_scene load_steps=14 format=4 uid="uid://sky2gs5mm0p2"]
 
 [ext_resource type="Script" uid="uid://dps2qsuqidw5i" path="res://scenes/main/main.gd" id="1_l1j6c"]
 [ext_resource type="PackedScene" uid="uid://cwsam0d2kdga7" path="res://ui/console/console.tscn" id="2_g8dxy"]
@@ -6,12 +6,13 @@
 [ext_resource type="Script" uid="uid://bwu70w3fnxm7o" path="res://ui/ui_layer.gd" id="2_ntois"]
 [ext_resource type="PackedScene" uid="uid://dokmdbk5gm76o" path="res://scenes/game_camera/game_camera.tscn" id="3_61xbm"]
 [ext_resource type="TileSet" uid="uid://bdrt74k6oqca4" path="res://resources/OutsideFloorTiles.tres" id="4_1jkxt"]
-[ext_resource type="PackedScene" uid="uid://crbnm830kwgw2" path="res://ui/battle/battle_menu.tscn" id="4_blune"]
+[ext_resource type="PackedScene" uid="uid://crbnm830kwgw2" path="res://ui/battle/battle_menu/battle_menu.tscn" id="4_blune"]
 [ext_resource type="PackedScene" uid="uid://baa7jxws02ten" path="res://scenes/player/player.tscn" id="5_8nh27"]
 [ext_resource type="Texture2D" uid="uid://bre2rrri53hrn" path="res://ui/grid/assets/grid.png" id="6_2vxtb"]
 [ext_resource type="Script" uid="uid://cke6jfwcim50" path="res://maps/common/tile_map_layers.gd" id="6_a8run"]
 [ext_resource type="Script" uid="uid://c440hxu7bv2x5" path="res://ui/grid/grid.gd" id="7_lgsps"]
 [ext_resource type="PackedScene" uid="uid://cqhltnmv3flxv" path="res://ui/grid/grid_square.tscn" id="7_ouso4"]
+[ext_resource type="Script" uid="uid://ccn3x048uahxq" path="res://scenes/main/combat.gd" id="7_th5th"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_l1j6c")
@@ -38,6 +39,9 @@ visible = false
 [node name="GameCamera" parent="." instance=ExtResource("3_61xbm")]
 z_index = 100
 zoom = Vector2(3, 3)
+
+[node name="Combat" type="Node2D" parent="."]
+script = ExtResource("7_th5th")
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 script = ExtResource("6_a8run")
@@ -76,4 +80,6 @@ script = ExtResource("7_lgsps")
 
 [connection signal="console_command" from="UI_Layer/Console" to="." method="_on_console_console_command"]
 [connection signal="console_focus_change" from="UI_Layer/Console" to="." method="_on_console_console_focus_change"]
+[connection signal="console_focus_change" from="UI_Layer/Console" to="Combat" method="_on_console_console_focus_change"]
 [connection signal="console_focus_change" from="UI_Layer/Console" to="Player" method="_on_console_console_focus_change"]
+[connection signal="move_button_down" from="UI_Layer/BattleMenu" to="Combat" method="_on_battle_menu_move_button_down"]

@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://crbnm830kwgw2"]
+
+[ext_resource type="Texture2D" uid="uid://cghwy7pjyduk" path="res://ui/battle/battle_menu/assets/Move.png" id="1_5wbjx"]
+[ext_resource type="Script" uid="uid://dust7i5vuf86f" path="res://ui/battle/battle_menu/battle_menu.gd" id="1_r4wga"]
+
+[node name="BattleMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_r4wga")
+
+[node name="MoveButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 32.0
+offset_top = -16.0
+offset_right = 128.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+icon = ExtResource("1_5wbjx")
+flat = true
+icon_alignment = 2
+
+[connection signal="button_down" from="MoveButton" to="." method="_on_move_button_button_down"]

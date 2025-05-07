@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cbear8b65jhst"
-path="res://.godot/imported/Spellbook.png-79380cabef1ceac7df357c118b8aa55c.ctex"
+uid="uid://cghwy7pjyduk"
+path="res://.godot/imported/Move.png-9be5eeb0a4146c6389ab2c7af22413e3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/battle/assets/Spellbook.png"
-dest_files=["res://.godot/imported/Spellbook.png-79380cabef1ceac7df357c118b8aa55c.ctex"]
+source_file="res://ui/battle/battle_menu/assets/Move.png"
+dest_files=["res://.godot/imported/Move.png-9be5eeb0a4146c6389ab2c7af22413e3.ctex"]
 
 [params]
 

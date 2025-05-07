@@ -27,3 +27,7 @@
 5/5/2025:
 	A "Move" button now appears when player is clicked during a battle.
 	Button currently doesn't do anything
+
+5/6/2025:
+	Moved most combat logic to a "Combat" node.
+	Fixed some "Move" button positioning
